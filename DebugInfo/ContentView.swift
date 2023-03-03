@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIKit
+import Security
 
 extension CGRect {
     var description: String {
@@ -24,6 +25,7 @@ extension UIEdgeInsets
 struct ContentView: View {
     @StateObject var updaterViewModel = UpdaterViewModel()
     @State var isPaused = false
+    @State var keychainTestResult: Bool?
     
     var body: some View {
         // Allign to the left side
@@ -76,6 +78,11 @@ struct ContentView: View {
                         Text("ProcessInfo.processInfo.processName: \(ProcessInfo.processInfo.processName)")
                         Text("ProcessInfo.processInfo.systemUptime: \(ProcessInfo.processInfo.systemUptime)")
                     }
+
+                    // Keychain info
+                    Group {
+                        Text("Keychain: \(testKeychain() ? "✅" : "❌")")
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
@@ -124,6 +131,49 @@ struct ContentView: View {
             }
         }
         .padding(.all)
+    }
+
+    func testKeychain() -> Bool {
+        if keychainTestResult != nil {
+            return keychainTestResult!
+        }
+        // Try writing and reading an item to the keychain and see if it works
+        let keychainQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "test",
+            kSecValueData as String: "test".data(using: .utf8)!
+        ]
+        let status = SecItemAdd(keychainQuery as CFDictionary, nil)
+        if status == errSecSuccess {
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrAccount as String: "test",
+                kSecReturnData as String: kCFBooleanTrue as Any,
+                kSecMatchLimit as String: kSecMatchLimitOne
+            ]
+            var dataTypeRef: AnyObject?
+            let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+            if status == errSecSuccess {
+                if let retrievedData = dataTypeRef as? Data,
+                   let password = String(data: retrievedData, encoding: .utf8) {
+                    // print("password: \(password)")
+                    keychainTestResult = true
+                    return true
+                } else {
+                    // print("Could not convert the data to a string.")
+                    keychainTestResult = false
+                    return false
+                }
+            } else {
+                // print("No results were returned.")
+                keychainTestResult = false
+                return false
+            }
+        } else {
+            // print("Nothing was added.")
+            keychainTestResult = false
+            return false
+        }
     }
 }
 
