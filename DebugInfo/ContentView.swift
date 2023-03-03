@@ -137,6 +137,13 @@ struct ContentView: View {
         if keychainTestResult != nil {
             return keychainTestResult!
         }
+        // Delete the test item if it exists
+        let deleteQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "test"
+        ]
+        SecItemDelete(deleteQuery as CFDictionary)
+
         // Try writing and reading an item to the keychain and see if it works
         let keychainQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
