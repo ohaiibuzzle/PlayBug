@@ -35,49 +35,72 @@ struct ContentView: View {
                     Text("\(updaterViewModel.index)")
                     // Date and time info
                     Group {
-                        Text("Date: \(updaterViewModel.now.description)")
-                        Text("Time: \(updaterViewModel.now.timeIntervalSince1970)")
-                        Text("Readable Time: \(DateFormatter.localizedString(from: updaterViewModel.now, dateStyle: .medium, timeStyle: .medium))")
-                        Text("TimeZone: \(TimeZone.current.description)")
+                        Group {
+                            Text("Date: \(updaterViewModel.now.description)")
+                            Text("Time: \(updaterViewModel.now.timeIntervalSince1970)")
+                            Text("Readable Time: \(DateFormatter.localizedString(from: updaterViewModel.now, dateStyle: .medium, timeStyle: .medium))")
+                            Text("TimeZone: \(TimeZone.current.description)")
+                        }
+                        
+                        Spacer()
+                        
+                        // Dump every single possible info on UIScreen
+                        Group {
+                            Text("Screen: \(UIScreen.main.debugDescription)")
+                            Text("UIScreen.main.bounds: \(UIScreen.main.bounds.description)")
+                            Text("UIScreen.main.frame: \(UIScreen.main.applicationFrame.description)")
+                            Text("UIScreen.main.nativeBounds: \(UIScreen.main.nativeBounds.description)")
+                            Text("UIScreen.main.nativeScale: \(UIScreen.main.nativeScale)")
+                            Text("UIScreen.main.scale: \(UIScreen.main.scale)")
+                        }
+                        
+                        Spacer()
+                        
+                        // Dump every single possible info on UIDevice
+                        Group {
+                            Text("UIDevice.current.name: \(UIDevice.current.name)")
+                            Text("UIDevice.current.model: \(UIDevice.current.model)")
+                            Text("UIDevice.current.systemName: \(UIDevice.current.systemName)")
+                            Text("UIDevice.current.systemVersion: \(UIDevice.current.systemVersion)")
+                            Text("UIDevice.current.orientation: \(UIDevice.current.orientation.rawValue)")
+                        }
+                        
+                        Spacer()
+                        
+                        // Dump every single possible info on the main application window
+                        Group {
+                            Text("UIApplication.shared.windows: \(UIApplication.shared.windows.description)")
+                            Text("UIApplication.shared.windows.first?.frame: \(UIApplication.shared.windows.first?.frame.description ?? "nil")")
+                        }
                     }
                     
-                    // Dump every single possible info on UIScreen
+                    Spacer()
                     Group {
-                        Text("Screen: \(UIScreen.main.debugDescription)")
-                        Text("UIScreen.main.bounds: \(UIScreen.main.bounds.description)")
-                        Text("UIScreen.main.frame: \(UIScreen.main.applicationFrame.description)")
-                        Text("UIScreen.main.nativeBounds: \(UIScreen.main.nativeBounds.description)")
-                        Text("UIScreen.main.nativeScale: \(UIScreen.main.nativeScale)")
-                        Text("UIScreen.main.scale: \(UIScreen.main.scale)")
+                        // Environment info
+                        Group {
+                            Text("Environment: \(ProcessInfo.processInfo.environment.description)")
+                            Text("ProcessInfo.processInfo.arguments: \(ProcessInfo.processInfo.arguments.description)")
+                            Text("ProcessInfo.processInfo.environment: \(ProcessInfo.processInfo.environment.description)")
+                            Text("ProcessInfo.processInfo.globallyUniqueString: \(ProcessInfo.processInfo.globallyUniqueString)")
+                            Text("ProcessInfo.processInfo.hostName: \(ProcessInfo.processInfo.hostName)")
+                            Text("ProcessInfo.processInfo.operatingSystemVersionString: \(ProcessInfo.processInfo.operatingSystemVersionString)")
+                            Text("ProcessInfo.processInfo.processIdentifier: \(ProcessInfo.processInfo.processIdentifier)")
+                            Text("ProcessInfo.processInfo.processName: \(ProcessInfo.processInfo.processName)")
+                            Text("ProcessInfo.processInfo.systemUptime: \(ProcessInfo.processInfo.systemUptime)")
+                        }
+                        
+                        Spacer()
+                        
+                        // loaded dyld info
+                        Group {
+                            Text("Dyld: \(dyld_image_count())")
+                            ForEach(0..<_dyld_image_count(), id: \.self) { index in
+                                Text("\(dyld_get_image_name(index))")
+                            }
+                        }
                     }
                     
-                    // Dump every single possible info on UIDevice
-                    Group {
-                        Text("UIDevice.current.name: \(UIDevice.current.name)")
-                        Text("UIDevice.current.model: \(UIDevice.current.model)")
-                        Text("UIDevice.current.systemName: \(UIDevice.current.systemName)")
-                        Text("UIDevice.current.systemVersion: \(UIDevice.current.systemVersion)")
-                        Text("UIDevice.current.orientation: \(UIDevice.current.orientation.rawValue)")
-                    }
-                    
-                    // Dump every single possible info on the main application window
-                    Group {
-                        Text("UIApplication.shared.windows: \(UIApplication.shared.windows.description)")
-                        Text("UIApplication.shared.windows.first?.frame: \(UIApplication.shared.windows.first?.frame.description ?? "nil")")
-                    }
-                    
-                    // Environment info
-                    Group {
-                        Text("Environment: \(ProcessInfo.processInfo.environment.description)")
-                        Text("ProcessInfo.processInfo.arguments: \(ProcessInfo.processInfo.arguments.description)")
-                        Text("ProcessInfo.processInfo.environment: \(ProcessInfo.processInfo.environment.description)")
-                        Text("ProcessInfo.processInfo.globallyUniqueString: \(ProcessInfo.processInfo.globallyUniqueString)")
-                        Text("ProcessInfo.processInfo.hostName: \(ProcessInfo.processInfo.hostName)")
-                        Text("ProcessInfo.processInfo.operatingSystemVersionString: \(ProcessInfo.processInfo.operatingSystemVersionString)")
-                        Text("ProcessInfo.processInfo.processIdentifier: \(ProcessInfo.processInfo.processIdentifier)")
-                        Text("ProcessInfo.processInfo.processName: \(ProcessInfo.processInfo.processName)")
-                        Text("ProcessInfo.processInfo.systemUptime: \(ProcessInfo.processInfo.systemUptime)")
-                    }
+                    Spacer()
 
                     // Keychain info
                     Group {
@@ -181,6 +204,19 @@ struct ContentView: View {
             keychainTestResult = false
             return false
         }
+    }
+
+    func dyld_image_count() -> Int {
+        var count: Int = 0
+        for _ in 0..<_dyld_image_count() {
+            count += 1
+        }
+        return count
+    }
+
+    func dyld_get_image_name(_ index: UInt32) -> String {
+        let name = String(cString: _dyld_get_image_name(index))
+        return name
     }
 }
 
