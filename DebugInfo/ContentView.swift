@@ -93,9 +93,9 @@ struct ContentView: View {
                         
                         // loaded dyld info
                         Group {
-                            Text("Dyld: \(dyld_image_count())")
-                            ForEach(0..<_dyld_image_count(), id: \.self) { index in
-                                Text("\(dyld_get_image_name(index))")
+                            Text("dyld count: \(getDylibInfo().count)")
+                            ForEach(getDylibInfo(), id: \.self) { dylib in
+                                Text(dylib)
                             }
                         }
                     }
@@ -205,18 +205,8 @@ struct ContentView: View {
             return false
         }
     }
-
-    func dyld_image_count() -> Int {
-        var count: Int = 0
-        for _ in 0..<_dyld_image_count() {
-            count += 1
-        }
-        return count
-    }
-
-    func dyld_get_image_name(_ index: UInt32) -> String {
-        let name = String(cString: _dyld_get_image_name(index))
-        return name
+    func getDylibInfo() -> Array<String>{
+        return DylibInfo().dylibInfo() as! Array<String>
     }
 }
 

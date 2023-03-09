@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB281AD529BA2BD800B551F1 /* DylibInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AB281AD429BA2BD800B551F1 /* DylibInfo.m */; };
 		AB369AA22986D83800B770E6 /* DebugInfoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB369AA12986D83800B770E6 /* DebugInfoApp.swift */; };
 		AB369AA42986D83800B770E6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB369AA32986D83800B770E6 /* ContentView.swift */; };
 		AB369AA62986D83A00B770E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB369AA52986D83A00B770E6 /* Assets.xcassets */; };
@@ -14,6 +15,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB281AD329BA2BD800B551F1 /* DebugInfo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DebugInfo-Bridging-Header.h"; sourceTree = "<group>"; };
+		AB281AD429BA2BD800B551F1 /* DylibInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DylibInfo.m; sourceTree = "<group>"; };
+		AB281AD629BA2D8D00B551F1 /* DylibInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DylibInfo.h; sourceTree = "<group>"; };
 		AB369A9E2986D83800B770E6 /* DebugInfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DebugInfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB369AA12986D83800B770E6 /* DebugInfoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugInfoApp.swift; sourceTree = "<group>"; };
 		AB369AA32986D83800B770E6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,9 +58,12 @@
 			children = (
 				AB369AA12986D83800B770E6 /* DebugInfoApp.swift */,
 				AB369AA32986D83800B770E6 /* ContentView.swift */,
+				AB281AD429BA2BD800B551F1 /* DylibInfo.m */,
+				AB281AD629BA2D8D00B551F1 /* DylibInfo.h */,
 				AB369AA52986D83A00B770E6 /* Assets.xcassets */,
 				AB369AA72986D83A00B770E6 /* DebugInfo.entitlements */,
 				AB369AA82986D83A00B770E6 /* Preview Content */,
+				AB281AD329BA2BD800B551F1 /* DebugInfo-Bridging-Header.h */,
 			);
 			path = DebugInfo;
 			sourceTree = "<group>";
@@ -101,6 +108,7 @@
 				TargetAttributes = {
 					AB369A9D2986D83800B770E6 = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -139,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB281AD529BA2BD800B551F1 /* DylibInfo.m in Sources */,
 				AB369AA42986D83800B770E6 /* ContentView.swift in Sources */,
 				AB369AA22986D83800B770E6 /* DebugInfoApp.swift in Sources */,
 			);
@@ -262,6 +271,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DebugInfo/DebugInfo.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -296,6 +306,8 @@
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "DebugInfo/DebugInfo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -307,6 +319,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DebugInfo/DebugInfo.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -341,6 +354,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "DebugInfo/DebugInfo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
